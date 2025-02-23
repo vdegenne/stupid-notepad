@@ -1,11 +1,12 @@
 import {withController} from '@snar/lit';
 import {LitElement, html} from 'lit';
 import {withStyles} from 'lit-with-styles';
-import {customElement} from 'lit/decorators.js';
+import {customElement, query} from 'lit/decorators.js';
 import {materialShellLoadingOff} from 'material-shell';
 import {bindInput} from 'relit';
 import {Mode, store} from '../store.js';
 import styles from './app-shell.css?inline';
+import type {MdOutlinedTextField} from '@material/web/all.js';
 
 declare global {
 	interface Window {
@@ -20,6 +21,8 @@ declare global {
 @withStyles(styles)
 @withController(store)
 export class AppShell extends LitElement {
+	@query('#textfield') textfield?: MdOutlinedTextField;
+
 	firstUpdated() {
 		materialShellLoadingOff.call(this);
 	}
@@ -34,8 +37,9 @@ ${store.content}</pre
 			${store.mode === Mode.EDIT
 				? html`<!-- -->
 						<md-outlined-text-field
+							id="textfield"
 							type="textarea"
-							class="h-full"
+							class="h-full m-2"
 							${bindInput(store, 'content')}
 						></md-outlined-text-field>
 						<!-- -->`
